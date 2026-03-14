@@ -1,5 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
+const API_URL = import.meta.env.VITE_API_URL || 'https://mern-blog-backendhwbt.onrender.com/api';
 // Helper to get auth token from Clerk
 const getAuthToken = async () => {
   try {
