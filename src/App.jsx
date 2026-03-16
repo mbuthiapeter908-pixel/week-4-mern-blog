@@ -24,31 +24,44 @@ function App() {
         <main className="flex-grow">
           <Container>
             <Routes>
-  {/* Public Routes */}
-  <Route path="/" element={<HomePage />} />
-  <Route path="/categories" element={<CategoriesPage />} />
-  <Route path="/categories/:slug" element={<SingleCategoryPage />} />
-  <Route path="/sign-in/*" element={<SignIn routing="path" path="/sign-in" />} />
-  <Route path="/sign-up/*" element={<SignUp routing="path" path="/sign-up" />} />
+              {/* Public Routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/post/:slug" element={<SinglePostPage />} />
+              {/* CRITICAL FIX: Add this route for /posts/:slug */}
+              <Route path="/posts/:slug" element={<SinglePostPage />} />
+              
+              {/* Keep your existing post route */}
+              <Route path="/post/:slug" element={<SinglePostPage />} />
+              
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/categories/:slug" element={<SingleCategoryPage />} />
+              <Route path="/sign-in/*" element={<SignIn routing="path" path="/sign-in" />} />
+              <Route path="/sign-up/*" element={<SignUp routing="path" path="/sign-up" />} />
 
-  {/* Protected Routes — must be BEFORE /posts/:slug */}
-  <Route path="/dashboard" element={
-    <ProtectedRoute><DashboardPage /></ProtectedRoute>
-  } />
-  <Route path="/posts/new" element={
-    <ProtectedRoute><CreatePostPage /></ProtectedRoute>
-  } />
-  <Route path="/posts/:id/edit" element={
-    <ProtectedRoute><EditPostPage /></ProtectedRoute>
-  } />
-  <Route path="/admin" element={
-    <ProtectedRoute><AdminPage /></ProtectedRoute>
-  } />
+              {/* Protected Routes */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/posts/new" element={
+                <ProtectedRoute>
+                  <CreatePostPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/posts/:id/edit" element={
+                <ProtectedRoute>
+                  <EditPostPage />
+                </ProtectedRoute>
+              } />
 
-  {/* Dynamic post routes LAST */}
-  <Route path="/post/:slug" element={<SinglePostPage />} />
-  <Route path="/posts/:slug" element={<SinglePostPage />} />
-</Routes>
+              {/* Admin Routes */}
+              <Route path="/admin" element={
+                <ProtectedRoute>
+                  <AdminPage />
+                </ProtectedRoute>
+              } />
+            </Routes>
           </Container>
         </main>
         <Footer />
