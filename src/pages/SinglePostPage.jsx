@@ -4,17 +4,20 @@ import { api } from '../lib/api';
 import CommentsSection from '../components/comments/CommentsSection';
 
 const SinglePostPage = () => {
-  const { slug, id } = useParams();
+  // ✅ Fixed
+  const params = useParams();
+  const identifier = params.slug || params.id || Object.values(params)[0];
+
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log('📄 Page loaded with:', { slug, id });
+  // ✅ Fix
+  console.log('📄 Page loaded with:', { identifier });
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const identifier = slug || id;
         console.log('🔍 Fetching post with identifier:', identifier);
         
         if (!identifier || identifier === 'undefined') {
@@ -54,10 +57,12 @@ const SinglePostPage = () => {
       }
     };
 
-    if (slug || id) {
+    // ✅ Fix
+    if (identifier) {
       fetchPost();
     }
-  }, [slug, id]);
+  // ✅ Fix
+  }, [identifier]);
 
   // Show loading state
   if (loading) {
@@ -92,7 +97,8 @@ const SinglePostPage = () => {
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mb-4">{error}</p>
           <p className="text-sm text-gray-500 dark:text-gray-500">
-            Attempted to load: {slug || id}
+            {/* ✅ Fix */}
+            Attempted to load: {identifier}
           </p>
           <button
             onClick={() => window.history.back()}
@@ -127,11 +133,10 @@ const SinglePostPage = () => {
     );
   }
 
-  // SUCCESS - Render the post
   return (
     <div className="container mx-auto px-4 py-8">
       <article className="max-w-3xl mx-auto">
-        {/* Back button */}
+
         <button
           onClick={() => window.history.back()}
           className="mb-6 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-2"
@@ -142,19 +147,16 @@ const SinglePostPage = () => {
           Back
         </button>
 
-        {/* Category */}
         {post.category && (
           <span className="inline-block px-3 py-1 text-sm font-semibold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
             {typeof post.category === 'object' ? post.category.name : post.category}
           </span>
         )}
 
-        {/* Title */}
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
           {post.title || 'Untitled'}
         </h1>
 
-        {/* Author and date */}
         <div className="flex items-center gap-4 mb-8">
           {post.author?.image && (
             <img
@@ -173,7 +175,6 @@ const SinglePostPage = () => {
           </div>
         </div>
 
-        {/* Featured image */}
         {post.featuredImage?.url && (
           <div className="mb-8 rounded-lg overflow-hidden">
             <img
@@ -188,7 +189,6 @@ const SinglePostPage = () => {
           </div>
         )}
 
-        {/* Content */}
         <div className="prose dark:prose-invert max-w-none">
           {post.content ? (
             post.content.split('\n').map((paragraph, index) => (
@@ -201,7 +201,6 @@ const SinglePostPage = () => {
           )}
         </div>
 
-        {/* Tags */}
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">
             {post.tags.map(tag => (
@@ -215,7 +214,6 @@ const SinglePostPage = () => {
           </div>
         )}
 
-        {/* Comments Section */}
         <section className="border-t border-gray-200 dark:border-gray-800 pt-8 mt-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
             Discussion
@@ -223,6 +221,7 @@ const SinglePostPage = () => {
           
           <CommentsSection postId={post._id} />
         </section>
+
       </article>
     </div>
   );
