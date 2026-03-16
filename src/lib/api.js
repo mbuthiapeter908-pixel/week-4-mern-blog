@@ -46,7 +46,7 @@ const fetchWithAuth = async (url, options = {}) => {
     const response = await fetch(url, {
       ...options,
       headers,
-   
+      //credentials: 'include'
     });
 
     return await handleResponse(response);
@@ -70,7 +70,7 @@ const uploadWithAuth = async (url, formData) => {
       method: 'POST',
       headers,
       body: formData,
-      credentials: 'include'
+      //credentials: 'include'
     });
 
     return await handleResponse(response);
