@@ -46,7 +46,7 @@ const fetchWithAuth = async (url, options = {}) => {
     const response = await fetch(url, {
       ...options,
       headers,
-      credentials: 'include'
+   
     });
 
     return await handleResponse(response);
